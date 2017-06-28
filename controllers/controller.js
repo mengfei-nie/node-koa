@@ -1,6 +1,6 @@
 // 引入fs
 const fs = require('fs')
-// 路由
+// 引入路由
 const router = require('koa-router')()
 
 // 读取controllers文件
@@ -11,6 +11,10 @@ const js_files = files.filter((item,i)=>{
     return /.*\.\js$/.test(item)
 })
 
+// 过滤掉controller.js
+js_files.splice(js_files.indexOf("controller.js"),1)
+
+// 注册路由信息
 js_files.forEach((item,i)=>{
     let mapping = require(__dirname + "/" + item)
     Object.keys(mapping).forEach((item,i)=>{
@@ -25,7 +29,6 @@ js_files.forEach((item,i)=>{
         }
     })
 })
-console.log(js_files)
 module.exports = function () {
     return router.routes()
 }
